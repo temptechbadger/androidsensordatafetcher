@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Android Sensor Data Fetcher</string>
+    <string name="service_description">Erfassung von Sensordaten</string>
+</resources>
