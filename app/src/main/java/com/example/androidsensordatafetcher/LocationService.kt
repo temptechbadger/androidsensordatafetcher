@@ -45,11 +45,11 @@ class LocationService: Service() {
         val locationFile = FileOutputStream(File(Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_DOWNLOADS), "location.csv"))
         val writer = BufferedWriter(OutputStreamWriter(locationFile))
-        val locationRequest = LocationRequest.Builder(10L).build()
+        val locationRequest = LocationRequest.Builder(0).build()
 
         createNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Tracking location...")
+            .setContentTitle("Tracking location")
             .setOngoing(true)
             .build()
 
