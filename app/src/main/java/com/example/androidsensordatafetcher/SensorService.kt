@@ -85,6 +85,7 @@ class SensorService : Service() {
                 override fun onSensorChanged(event: SensorEvent) {
                     writer.write(event.sensor.name)
                     writer.write(",")
+//                    event.timestamp returns uptime, not world time
                     writer.write(System.currentTimeMillis().toString())
                     writer.write(",")
                     writer.write(event.values.joinToString())
