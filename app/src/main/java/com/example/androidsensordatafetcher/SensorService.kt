@@ -65,18 +65,7 @@ class SensorService : Service() {
     }
 
     private fun registerSensors(sensorManager: SensorManager, writer: BufferedWriter) {
-        val sensors = listOf(
-            sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT),
-            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY),
-            sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
-            sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-            sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-            sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE),
-            sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY),
-            sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
-            sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
-        )
+        val sensors = sensorManager.getSensorList(Sensor.TYPE_ALL)
 
         for (sensor in sensors) {
             sensorManager.registerListener(object : SensorEventListener {
