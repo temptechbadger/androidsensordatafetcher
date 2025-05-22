@@ -27,7 +27,7 @@ class SensorService : Service() {
          val sensorFile = FileOutputStream(
              File(
                  Environment.getExternalStoragePublicDirectory(
-             Environment.DIRECTORY_DOWNLOADS), "sensor.csv")
+             Environment.DIRECTORY_DOWNLOADS), fileName)
          )
         val writer = BufferedWriter(OutputStreamWriter(sensorFile))
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
