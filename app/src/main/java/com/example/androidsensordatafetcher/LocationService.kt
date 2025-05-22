@@ -17,6 +17,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
@@ -38,31 +39,15 @@ class LocationService: Service() {
         val locationFile = FileOutputStream(File(Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_DOWNLOADS), fileName))
         val writer = BufferedWriter(OutputStreamWriter(locationFile))
-        val locationRequest = LocationRequest.Builder(0).build()
-
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+            .setMinUpdateIntervalMillis(5000)
+            .build()
         createNotificationChannel()
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Tracking location")
             .setOngoing(true)
             .build()
 
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                super.onLocationResult(locationResult)
-                for (location in locationResult.locations){
-                    writer.write(location.time.toString())
-                    writer.write(",")
-                    writer.write(location.latitude.toString())
-                    writer.write(",")
-                    writer.write(location.longitude.toString())
-                    writer.newLine()
-                    writer.flush()
-                }
-            }
-        }
-
-        locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ServiceCompat.startForeground(
                 this,
@@ -72,7 +57,24 @@ class LocationService: Service() {
             )
         } else {
             ServiceCompat.startForeground(this, 101, notification, 0)
-        }    }
+        }
+
+        locationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult.locations.let { locations ->
+                    locations.forEach { location ->
+                        writer.write(location.time.toString())
+                        writer.write(",")
+                        writer.write(location.latitude.toString())
+                        writer.write(",")
+                        writer.write(location.longitude.toString())
+                        writer.newLine()
+                        writer.flush()
+                    }
+                }
+            }
+        }, Looper.getMainLooper())
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground()
