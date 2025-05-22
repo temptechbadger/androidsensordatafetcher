@@ -23,6 +23,7 @@ class SensorService : Service() {
     private lateinit var sensorManager: SensorManager
 
      private fun startForeground() {
+         val fileName = "${System.currentTimeMillis()}-sensor.csv"
          val sensorFile = FileOutputStream(
              File(
                  Environment.getExternalStoragePublicDirectory(

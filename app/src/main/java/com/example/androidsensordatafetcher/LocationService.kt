@@ -33,9 +33,10 @@ class LocationService: Service() {
 
     @SuppressLint("MissingPermission")
     private fun startForeground() {
+        val fileName = "${System.currentTimeMillis()}-location.csv"
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         val locationFile = FileOutputStream(File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_DOWNLOADS), "location.csv"))
+            Environment.DIRECTORY_DOWNLOADS), fileName))
         val writer = BufferedWriter(OutputStreamWriter(locationFile))
         val locationRequest = LocationRequest.Builder(0).build()
 
