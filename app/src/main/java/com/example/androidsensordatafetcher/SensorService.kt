@@ -76,7 +76,8 @@ class SensorService : Service() {
                     writer.write(event.sensor.name)
                     writer.write(",")
 //                    event.timestamp returns uptime, not world time
-                    writer.write(System.currentTimeMillis().toString())
+//                    use event.timestamp for increased accuracy
+                    writer.write(event.timestamp.toString())
                     writer.write(",")
                     writer.write(event.values.joinToString())
                     writer.newLine()
